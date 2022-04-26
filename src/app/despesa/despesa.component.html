@@ -1,0 +1,69 @@
+<div class="container ">
+    <div class="row">
+        <div class="col">
+            <br>
+
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                Adicionar despesa
+            </button>
+
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <app-cadastrar-despesa></app-cadastrar-despesa>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <br>
+            <br>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div *ngIf="exibirEstimativas">
+                <app-grafico [infoGrafico]="graficoEstimativas"></app-grafico>
+            </div>
+        </div>
+        <div class="col">
+            <div *ngIf="exibirTags">
+                <app-grafico [infoGrafico]="graficoTags"></app-grafico>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="row">
+        <div class="col">
+
+
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Despesa</th>
+                        <th scope="col">Valor</th>
+                        <th scope="col">Parcelas</th>
+                        <th scope="col">Data</th>
+                        <th scope="col">Tag</th>
+                        <th scope="col">Grupo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of despesas">
+                        <td>{{item.nomeDespesa}}</td>
+                        <td>{{item.valorDespesa}}</td>
+                        <td>{{item.parcela}}/{{item.parcelaTotal}}</td>
+                        <td>{{item.data}}</td>
+                        <td>{{item.tag}}</td>
+                        <td>{{item.grupo?.nome}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br>
+    <br>
+</div>
