@@ -1,3 +1,4 @@
+import { Tags } from './../models/tags.model';
 import { Despesa } from './../models/despesa.model';
 import { CompiladoDespesas } from './../models/compiladoDespesas.model';
 import { Estimativas } from '../models/estimativas.model';
@@ -47,17 +48,8 @@ export class DespesaComponent implements OnInit {
 
       this.compiladoDespesas = obj
       this.compiladoDespesas[0].despesas.forEach(d => {
-        console.log(d)
         this.despesas.push(d)
       })
-
-      this.graficoTags.labels = estimativasLabels
-      this.graficoTags.data = estimativasData
-
-      //console.log(this.graficoTags.labels)
-      //console.log(this.graficoTags.data)
-
-      this.exibirTags = true;
     })
 
     await this.despesasService.getEstimativas('2').subscribe(objeto => {
@@ -76,6 +68,23 @@ export class DespesaComponent implements OnInit {
 
       this.exibirEstimativas = true
 
+    })
+
+    await this.despesasService.getTags('2').subscribe(objeto => {
+
+      let tags: Tags[] = objeto
+      let estimativasLabels: string[] = []
+      let estimativasData: string[] = [];
+
+      tags.forEach(tag => {
+        estimativasLabels.push(tag.tag)
+        estimativasData.push(tag.total+'')
+      })
+
+      this.graficoTags.labels = estimativasLabels
+      this.graficoTags.data = estimativasData
+
+      this.exibirTags = true
     })
 
   }

@@ -1,3 +1,4 @@
+import { Tags } from './../models/tags.model';
 import { CompiladoDespesas } from '../models/compiladoDespesas.model';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -33,6 +34,8 @@ export class DespesasService {
   public getEstimativas(id: string): Observable<Estimativas[]> {
     return this.httpClient.get<Estimativas[]>(this.baseUrl + '/api/despesas/pessoa/2/estimativas');
   }
-  
 
+  public getTags(id: string): Observable<Tags[]> {
+    return this.httpClient.get<Tags[]>(this.baseUrl + '/api/despesas/tags/pessoa/2');
+  }
 }

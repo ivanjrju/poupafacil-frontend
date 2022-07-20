@@ -1,6 +1,6 @@
 export class Grafico{
     nome: string;
-    tipo: string;
+    tipo: any;
     labels: string[];
     data: string[];
 }
