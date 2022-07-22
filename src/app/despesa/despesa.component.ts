@@ -27,10 +27,11 @@ export class DespesaComponent implements OnInit {
     nome: "Estimativas",
     tipo: "bar",
     labels: [],
-    data: []
+    data: [],
+    legend:false
   }
   graficoTags: any = {
-    nome: "Tags",
+    nome: "Categoria",
     tipo: "doughnut",
     labels: [],
     data: []
@@ -59,12 +60,13 @@ export class DespesaComponent implements OnInit {
       let estimativasData: string[] = [];
 
       estimativas.forEach(estimativa => {
-        estimativasLabels.push(estimativa.data)
+        estimativasLabels.push(formatarDataExtenso(estimativa.data))
         estimativasData.push(estimativa.totalDespesasMes + '')
       })
 
       this.graficoEstimativas.labels = estimativasLabels
       this.graficoEstimativas.data = estimativasData
+      this.graficoEstimativas.legend = false
 
       this.exibirEstimativas = true
 
@@ -88,4 +90,25 @@ export class DespesaComponent implements OnInit {
     })
 
   }
+
+  
+}
+
+function formatarDataExtenso(periodo: string) {
+  var data = new Date();
+  let periodoAno = periodo.substring(0,4);
+  let periodoMes = periodo.substring(5,7)
+  console.log(periodoMes)
+  console.log(periodoAno)
+  
+  data.setFullYear(parseInt(periodoAno));
+  data.setMonth(parseInt(periodoMes));
+  // Meses possíveis
+  var meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+  var mes = data.getMonth();
+
+  // Resultado
+  var extenso =  meses[mes] + ' - ' + periodoAno;
+  return extenso;
+
 }
