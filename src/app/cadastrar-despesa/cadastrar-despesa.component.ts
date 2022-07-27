@@ -15,6 +15,10 @@ export class CadastrarDespesaComponent implements OnInit {
   inputValor: number
   inputParcela: number
   inputData: string
+  inputCategoria : string 
+  isGrupo: boolean = false;
+  isParcela: boolean=false;
+ 
 
   cadastroForm = new FormGroup({
     inputNomeDespesa: new FormControl(''),
@@ -68,7 +72,16 @@ export class CadastrarDespesaComponent implements OnInit {
     this.httpClient.get<any>('https://poupafacil-backend.herokuapp.com/api/grupos/pessoa/2').subscribe(objeto => {
       this.grupos = objeto
     })
-    
+ 
+  }
+
+  onCompraParcelada(){
+  if(this.isParcela == true){
+      this.isParcela = false;
+    }else{
+      this.isParcela = true;
+    }
+    console.log(this.isParcela)
   }
 
 }

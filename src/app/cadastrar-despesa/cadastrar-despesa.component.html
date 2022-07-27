@@ -1,39 +1,69 @@
 <form [formGroup]="cadastroForm" (ngSubmit)="cadastrarDespesa()">
 
+    <div class="modal-header">
+        <h5 class="modal-title">Adicionar nova despesa</h5>
+        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"> X </button>
+    </div>
+    <br>
     <div class="row">
-        <div class="col-5">
+        <div class="col-8">
             <div class="form-group">
-                <input type="text" class="form-control" formControlName="inputNomeDespesa" placeholder="despesa">
+                <input type="text" class="form-control" formControlName="inputNomeDespesa" placeholder="Nome Despesa">
             </div>
         </div>
-        <div class="col">
+        <div class="col-4">
             <div class="form-group">
                 <input type="text" class="form-control" formControlName="inputValor" placeholder="valor">
             </div>
         </div>
-        <div class="col">
+       
+       
+    </div>
+
+    <div class="row">
+        <div class="col-5">
             <div class="form-group">
                 <input type="date" class="form-control" formControlName="inputData" placeholder="valor">
             </div>
         </div>
-    </div>
-
-    <div class="row">
-        <div class="col-3">
-            <input type="number" class="form-control" formControlName="inputParcela" placeholder="Parcela">
+        <div class="col-7">
+            <input type="text" class="form-control" formControlName="inputCategoria" placeholder="Categoria. Ex: comida, roupa...">
         </div>
+       
+    </div>
+ 
+    <div class="row">
         <div class="col">
             <div class="input-group mb-3">
-                <select class="form-control" formControlName="inputIdGrupo" id="inputIdGrupo">
-                    <option selected value="0">Sem grupo</option>
+                <select  class="form-control" formControlName="inputIdGrupo" id="inputIdGrupo" >
+                    <option value="" disabled selected>Selecione o grupo</option>
+                    <option [selected]="true == true" value="0">Sem grupo</option>
                     <option *ngFor="let grupo of grupos; let i = index" [value]="grupos[i].idGrupo">
                         {{grupo.nome}}
                     </option>
                     
                 </select>
             </div>
-        </div>
+        </div>   
     </div>
-    <button type="submit" class="btn btn-primary">Enviar</button>
+    <div class="row">
+        <div class="col-5">
+            <label for="checkboxParcela" class="check">
+                <input id="checkboxParcela" type="checkbox" (change)="onCompraParcelada()"  > Compra parcelada
+            </label>
+        </div>
+        <div class="col-7">
+            <input type="number" class="form-control" formControlName="inputParcela" *ngIf="isParcela" placeholder="Parcela" required>
+        </div>   
+    </div>
+ 
+ 
+   
+
+    <br>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Enviar</button>
+    </div>
+    
 
 </form>
