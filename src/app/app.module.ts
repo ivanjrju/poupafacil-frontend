@@ -11,6 +11,7 @@ import { CadastrarDespesaComponent } from './cadastrar-despesa/cadastrar-despesa
 import { PortalCabecalhoComponent } from './portal-cabecalho/portal-cabecalho.component';
 import { DespesaComponent } from './despesa/despesa.component';
 import { GraficoComponent } from './grafico/grafico.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { GraficoComponent } from './grafico/grafico.component';
     CadastrarDespesaComponent,
     PortalCabecalhoComponent,
     DespesaComponent,
-    GraficoComponent
+    GraficoComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
