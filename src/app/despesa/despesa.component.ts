@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Grafico } from '../models/grafico.model';
 import { DespesasService } from '../services/despesas.service';
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 @Component({
   selector: 'app-despesa',
@@ -15,10 +16,12 @@ import { DespesasService } from '../services/despesas.service';
 export class DespesaComponent implements OnInit {
 
   despesas: Despesa[] = []
+  token: any;
 
   exibirEstimativas: boolean = false;
   exibirTags: boolean = false;
   exibirListaDespesas: boolean = false
+  exibirCarregamento: boolean = true;
 
   compiladoDespesas: CompiladoDespesas[]
 
@@ -37,12 +40,26 @@ export class DespesaComponent implements OnInit {
     data: []
   }
 
-
   constructor(private http: HttpClient, private despesasService: DespesasService) { }
 
-  async ngOnInit() {
+  deletarDespesa(item: any){
+    console.log(item.idCorrelacaoParcela)
+    this.token = localStorage.getItem("token")
+    this.despesasService.deleteDespesa(this.token, item.idCorrelacaoParcela).subscribe(response=>{
+      console.log("deletado")
+    },
+    error=>{
+      console.log("Erro ao deletar")
+    })
+    console.log(item)
+  }
 
-    await this.despesasService.getDespesasPorPessoa('2').subscribe(obj => {
+
+  async ngOnInit() {
+    this.token = localStorage.getItem("token")
+    console.log(this.token )
+
+    await this.despesasService.getDespesasPorPessoa(this.token).subscribe(obj => {
 
       let estimativasLabels: string[] = []
       let estimativasData: string[] = []
@@ -53,8 +70,8 @@ export class DespesaComponent implements OnInit {
       })
     })
 
-    await this.despesasService.getEstimativas('2').subscribe(objeto => {
 
+    await this.despesasService.getEstimativas(this.token ).subscribe(objeto => {
       let estimativas: Estimativas[] = objeto
       let estimativasLabels: string[] = []
       let estimativasData: string[] = [];
@@ -68,11 +85,16 @@ export class DespesaComponent implements OnInit {
       this.graficoEstimativas.data = estimativasData
       this.graficoEstimativas.legend = false
 
-      this.exibirEstimativas = true
+      if(this.despesas.length != 0){
+        this.exibirEstimativas = true
+        this.exibirCarregamento = false;
+      }
+      this.exibirCarregamento = false;
+      
 
     })
 
-    await this.despesasService.getTags('2').subscribe(objeto => {
+    await this.despesasService.getTags(this.token).subscribe(objeto => {
 
       let tags: Tags[] = objeto
       let estimativasLabels: string[] = []
@@ -86,20 +108,18 @@ export class DespesaComponent implements OnInit {
       this.graficoTags.labels = estimativasLabels
       this.graficoTags.data = estimativasData
 
+      
       this.exibirTags = true
+      this.exibirEstimativas = true
     })
 
   }
-
-  
 }
 
 function formatarDataExtenso(periodo: string) {
   var data = new Date();
   let periodoAno = periodo.substring(0,4);
   let periodoMes = periodo.substring(5,7)
-  console.log(periodoMes)
-  console.log(periodoAno)
   
   data.setFullYear(parseInt(periodoAno));
   data.setMonth(parseInt(periodoMes));
@@ -112,3 +132,5 @@ function formatarDataExtenso(periodo: string) {
   return extenso;
 
 }
+
+

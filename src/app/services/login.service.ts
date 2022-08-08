@@ -18,7 +18,8 @@ export class LoginService {
 
   constructor(private httpClient: HttpClient) { }
   
-  public getLogin(email: string, senha: string ): Observable<Tags[]> {
-    return this.httpClient.get<Tags[]>(this.baseUrl + '/api/despesas/tags/pessoa/2');
+  public getLogin(email: string, senha: string ){
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
   }
 }

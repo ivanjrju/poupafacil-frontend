@@ -12,6 +12,7 @@ import { PortalCabecalhoComponent } from './portal-cabecalho/portal-cabecalho.co
 import { DespesaComponent } from './despesa/despesa.component';
 import { GraficoComponent } from './grafico/grafico.component';
 import { LoginComponent } from './login/login.component';
+import { DespesaGrupoComponent } from './despesa-grupo/despesa-grupo.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { LoginComponent } from './login/login.component';
     PortalCabecalhoComponent,
     DespesaComponent,
     GraficoComponent,
-    LoginComponent
+    LoginComponent,
+    DespesaGrupoComponent
   ],
   imports: [
     BrowserModule,
