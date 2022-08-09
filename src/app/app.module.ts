@@ -13,6 +13,7 @@ import { DespesaComponent } from './despesa/despesa.component';
 import { GraficoComponent } from './grafico/grafico.component';
 import { LoginComponent } from './login/login.component';
 import { DespesaGrupoComponent } from './despesa-grupo/despesa-grupo.component';
+import { PessoaComponent } from './pessoa/pessoa.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { DespesaGrupoComponent } from './despesa-grupo/despesa-grupo.component';
     DespesaComponent,
     GraficoComponent,
     LoginComponent,
-    DespesaGrupoComponent
+    DespesaGrupoComponent,
+    PessoaComponent
   ],
   imports: [
     BrowserModule,

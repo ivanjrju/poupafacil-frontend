@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { Grafico } from '../models/grafico.model';
 import { DespesasService } from '../services/despesas.service';
 import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-despesa',
@@ -40,7 +41,10 @@ export class DespesaComponent implements OnInit {
     data: []
   }
 
-  constructor(private http: HttpClient, private despesasService: DespesasService) { }
+  constructor(
+    private router: Router, 
+    private http: HttpClient,
+    private despesasService: DespesasService) { }
 
   deletarDespesa(item: any){
     console.log(item.idCorrelacaoParcela)
@@ -57,10 +61,8 @@ export class DespesaComponent implements OnInit {
 
   async ngOnInit() {
     this.token = localStorage.getItem("token")
-    console.log(this.token )
-
+  
     await this.despesasService.getDespesasPorPessoa(this.token).subscribe(obj => {
-
       let estimativasLabels: string[] = []
       let estimativasData: string[] = []
 
@@ -88,14 +90,23 @@ export class DespesaComponent implements OnInit {
       if(this.despesas.length != 0){
         this.exibirEstimativas = true
         this.exibirCarregamento = false;
+      }else{
+        this.exibirCarregamento = true;
+        this.exibirEstimativas = false;     
       }
-      this.exibirCarregamento = false;
-      
+     console.log(objeto)
 
-    })
+    },
+    error =>{
+      console.log('Erro ao carregar informações', error["message"])
+      console.log("HTTP status: "+error.status)
+      if(error.status == 403){
+          alert("Sessão expirada, efetue login");
+          this.router.navigate(['/login']);
+      }
+    } )
 
     await this.despesasService.getTags(this.token).subscribe(objeto => {
-
       let tags: Tags[] = objeto
       let estimativasLabels: string[] = []
       let estimativasData: string[] = [];
@@ -108,9 +119,15 @@ export class DespesaComponent implements OnInit {
       this.graficoTags.labels = estimativasLabels
       this.graficoTags.data = estimativasData
 
-      
-      this.exibirTags = true
-      this.exibirEstimativas = true
+      if(tags.length!=0){
+        this.exibirTags = true
+        this.exibirEstimativas = true
+        this.exibirCarregamento = false
+      }else{
+        this.exibirTags = false
+        this.exibirEstimativas = false
+      }
+
     })
 
   }

@@ -55,6 +55,6 @@ export class DespesasService {
     const headers = { 
       'content-type': 'application/json', 
       'Authorization': "Bearer "+ token} 
-    return this.httpClient.delete(this.baseUrl + '/api/despesas/idCorrelacao/'+idCorrelacao,  {headers: headers});
+    return this.httpClient.delete(this.baseUrl + '/api/despesas/'+idCorrelacao,  {headers: headers});
   }
 }

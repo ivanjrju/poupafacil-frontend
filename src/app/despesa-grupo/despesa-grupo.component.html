@@ -30,8 +30,13 @@
         </div>  
     </div>
 </div>
+<div>
 
-<p> Grafico de grupo</p>
+<div class="container">
+    <h6 class="card-title">Você não possui grupos cadastrados, adicione um novo grupo para visualizar
+        informações consolidadas
+    </h6>
+</div>
 <div class="container">
     <div class="row">
         <div class="col-2">
@@ -48,13 +53,10 @@
         </div>
     </div>
 </div>
-<p> tabela de despesa de grupoo</p>
 <br>
-<p> Usuarios do grupo</p>
-<div class="container">
+<div class="container"  *ngIf="isExibePessoasGrupo">
     <div class="row">
         <div class="col-6">
-        
             <table class="table table-hover">
                 <thead class="thead-dark">
                     <tr>
