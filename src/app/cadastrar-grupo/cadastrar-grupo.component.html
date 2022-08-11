@@ -1,33 +1,30 @@
 <form [formGroup]="cadastroForm" (ngSubmit)="teste()">
 
-    <div class="form-group row mb-3">
-        <label class="col-sm-2 col-form-label">Nome</label>
-        <div class="col-sm-2">
-            <input [(ngModel)]="inputNome" type="text" class="form-control" formControlName="inputNome">
-        </div>
+    <div class="modal-header">
+        <h5 class="modal-title">Adicionar novo grupo</h5>
+        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"> X </button>
     </div>
-
-    <div class="form-group row mb-3">
-        <label class="col-sm-2 col-form-label">Incluir pessoa</label>
-        <div class="input-group col-sm-2">
-            <input [(ngModel)]="inputIdPessoa" type="text" class="form-control" formControlName="inputIdPessoa"
-                aria-describedby="basic-addon2">
-            <div class="input-group-append">
-                <div (click)="adicionarPessoa()" id="basic-addon2" type="button" class="btn btn-primary">Incluir</div>
+    <br>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <input type="text" class="form-control" formControlName="inputNomeGrupo" placeholder="Nome do grupo">
             </div>
         </div>
     </div>
-
-    <div class="form-group row mb-3" *ngFor="let idPessoa of inputIdPessoas; ; index as i">
-        <label class="col-sm-2 col-form-label"></label>
-        <div class="input-group col-sm-8">
-            <input type="text" class="form-control col-2" value="{{idPessoa}}" aria-describedby="basic-addon2"
-                disabled="false">
-            <div class="input-group-append">
-                <a class="btn btn-danger" id="basic-addon2" (click)="removerPessoa(i)">Excluir</a>
+    <div class="row">
+        <div class="col">
+            <div class="input-group mb-3">
+                <select  class="form-control" formControlName="inputIdGrupo" id="inputIdGrupo" >
+                    <option value="" disabled selected>Selecione um usuario</option>
+                    <option [selected]="true == true" value="0">Sem grupo</option>
+                    
+                </select>
             </div>
-        </div>
+        </div>   
     </div>
-
-    <button type="submit" class="btn btn-primary">Enviar</button>
+    <br>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Enviar</button>
+    </div>
 </form>

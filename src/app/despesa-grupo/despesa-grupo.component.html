@@ -1,0 +1,78 @@
+<app-portal-cabecalho></app-portal-cabecalho>
+
+<br>
+
+<div class="container">
+    <h4 class="card-title">Dashboard despesas por grupo</h4>
+</div>
+<br>
+
+<div class="container">
+    <div class="row">
+        <div class="col-1">
+            <h5 class="card-title pd-top-5">Grupo: </h5>
+        </div>
+        <div class="col-8">
+            <div class="input-group mb-3">
+                <select  class="form-control" formControlName="inputIdGrupo" id="inputIdGrupo" >
+                    <option value="" >Selecione o grupo</option>
+                    <option [selected]="true == true" value="0">Sem grupo</option>
+                    <option *ngFor="let grupo of grupos; let i = index" [value]="grupos[i].idGrupo">
+                        {{grupo.nome}}
+                    </option>
+                </select>
+            </div>
+        </div> 
+        <div class="col">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                <img src="../../assets/img/plus-circle-fill.svg"  width="20" height="20"> Novo grupo
+            </button>
+        </div>  
+    </div>
+</div>
+<div>
+
+<div class="container">
+    <h6 class="card-title">Você não possui grupos cadastrados, adicione um novo grupo para visualizar
+        informações consolidadas
+    </h6>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-2">
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <app-cadastrar-grupo></app-cadastrar-grupo>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<div class="container"  *ngIf="isExibePessoasGrupo">
+    <div class="row">
+        <div class="col-6">
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Email</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr >
+                        <td>Jacqueline</td>
+                        <td>Jacqueline@email</td>
+                        <td><button type="button" class="btn btn-danger">X</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

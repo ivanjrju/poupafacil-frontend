@@ -1,0 +1,75 @@
+<nav class="navbar navbar-dark bg-dark navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </nav>
+<br>
+<!--Mensagem de cadastro-->
+<div class="container"  *ngIf="isCadastroSucesso">
+    <div class="alert alert-primary" role="alert">
+       {{msgCadastro}}
+    </div>
+</div>
+<!--Formulario de login-->
+<div class="d-flex justify-content-center align-items-center" *ngIf="!isExibirCadastro">
+    <div class="card p-5">
+        <img src="../../assets/images/logo_poupa_facil_png.png" alt="poupafacil">
+        <form [formGroup]="loginForm" (ngSubmit)="efetuarLogin()">
+            <div class="form-group">
+                <label for="email">E-mail</label>
+                <input type="text" formControlName="inputEmail" id="email" class="form-control"  ngModel required>
+            </div>
+
+            <div class="form-group">
+            <label for="senha">Senha</label>
+                <input type="password" formControlName="inputSenha" id="senha" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <a href="#">Esqueceu sua senha?</a>
+            </div>
+            <div class="form-group">
+                <a href="#" (click)="habilitarCadastro()">Novo por aqui?</a>
+            </div>
+
+            <div>
+                <button class="btn btn-dark botao-login" type="submit">Login</button>
+            </div>   
+        </form> 
+    </div>   
+</div>
+
+<!--Formulario de cadastro-->
+<div class="container"  *ngIf="isCadastroSucesso">
+    <div class="alert alert-primary" role="alert">
+       {{msgCadastro}}
+    </div>
+</div>
+<br>
+<div class="d-flex justify-content-center align-items-center" *ngIf="isExibirCadastro" >
+    <div class="card p-5">
+        <img src="../../assets/images/logo_poupa_facil_png.png" alt="poupafacil">
+        <form [formGroup]="pessoaForm" (ngSubmit)="cadastrarPessoa()">
+            <div class="form-group">
+                <label for="nomeCadastro">Nome</label>
+                <input type="text" formControlName="inputNomeCadastro" id="nomeCadastro" class="form-control"  ngModel required>
+            </div>
+            <div class="form-group">
+                <label for="emailCadastro">E-mail</label>
+                <input type="text" formControlName="inputEmailCadastro" id="emailCadastro" class="form-control"  ngModel required>
+            </div>
+            <div class="form-group">
+            <label for="senhaCadastro">Senha</label>
+                <input type="password" formControlName="inputSenhaCadastro" id="senhaCadastro" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="renda">Renda</label>
+                <input type="password" formControlName="inputRendaCadastro" id="renda" class="form-control">
+            </div>
+            <div>
+                <button class="btn btn-dark botao-login" type="submit">Cadastrar</button>
+            </div>
+        </form>      
+    </div>
+</div>

@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Grafico } from '../models/grafico.model';
 import { DespesasService } from '../services/despesas.service';
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-despesa',
@@ -15,10 +17,12 @@ import { DespesasService } from '../services/despesas.service';
 export class DespesaComponent implements OnInit {
 
   despesas: Despesa[] = []
+  token: any;
 
   exibirEstimativas: boolean = false;
   exibirTags: boolean = false;
   exibirListaDespesas: boolean = false
+  exibirCarregamento: boolean = true;
 
   compiladoDespesas: CompiladoDespesas[]
 
@@ -27,22 +31,38 @@ export class DespesaComponent implements OnInit {
     nome: "Estimativas",
     tipo: "bar",
     labels: [],
-    data: []
+    data: [],
+    legend:false
   }
   graficoTags: any = {
-    nome: "Tags",
+    nome: "Categoria",
     tipo: "doughnut",
     labels: [],
     data: []
   }
 
+  constructor(
+    private router: Router, 
+    private http: HttpClient,
+    private despesasService: DespesasService) { }
 
-  constructor(private http: HttpClient, private despesasService: DespesasService) { }
+  deletarDespesa(item: any){
+    console.log(item.idCorrelacaoParcela)
+    this.token = localStorage.getItem("token")
+    this.despesasService.deleteDespesa(this.token, item.idCorrelacaoParcela).subscribe(response=>{
+      console.log("deletado")
+    },
+    error=>{
+      console.log("Erro ao deletar")
+    })
+    console.log(item)
+  }
+
 
   async ngOnInit() {
-
-    await this.despesasService.getDespesasPorPessoa('2').subscribe(obj => {
-
+    this.token = localStorage.getItem("token")
+  
+    await this.despesasService.getDespesasPorPessoa(this.token).subscribe(obj => {
       let estimativasLabels: string[] = []
       let estimativasData: string[] = []
 
@@ -52,26 +72,41 @@ export class DespesaComponent implements OnInit {
       })
     })
 
-    await this.despesasService.getEstimativas('2').subscribe(objeto => {
 
+    await this.despesasService.getEstimativas(this.token ).subscribe(objeto => {
       let estimativas: Estimativas[] = objeto
       let estimativasLabels: string[] = []
       let estimativasData: string[] = [];
 
       estimativas.forEach(estimativa => {
-        estimativasLabels.push(estimativa.data)
+        estimativasLabels.push(formatarDataExtenso(estimativa.data))
         estimativasData.push(estimativa.totalDespesasMes + '')
       })
 
       this.graficoEstimativas.labels = estimativasLabels
       this.graficoEstimativas.data = estimativasData
+      this.graficoEstimativas.legend = false
 
-      this.exibirEstimativas = true
+      if(this.despesas.length != 0){
+        this.exibirEstimativas = true
+        this.exibirCarregamento = false;
+      }else{
+        this.exibirCarregamento = true;
+        this.exibirEstimativas = false;     
+      }
+     console.log(objeto)
 
-    })
+    },
+    error =>{
+      console.log('Erro ao carregar informações', error["message"])
+      console.log("HTTP status: "+error.status)
+      if(error.status == 403){
+          alert("Sessão expirada, efetue login");
+          this.router.navigate(['/login']);
+      }
+    } )
 
-    await this.despesasService.getTags('2').subscribe(objeto => {
-
+    await this.despesasService.getTags(this.token).subscribe(objeto => {
       let tags: Tags[] = objeto
       let estimativasLabels: string[] = []
       let estimativasData: string[] = [];
@@ -84,8 +119,35 @@ export class DespesaComponent implements OnInit {
       this.graficoTags.labels = estimativasLabels
       this.graficoTags.data = estimativasData
 
-      this.exibirTags = true
+      if(tags.length!=0){
+        this.exibirTags = true
+        this.exibirEstimativas = true
+        this.exibirCarregamento = false
+      }else{
+        this.exibirTags = false
+        this.exibirEstimativas = false
+      }
+
     })
 
   }
 }
+
+function formatarDataExtenso(periodo: string) {
+  var data = new Date();
+  let periodoAno = periodo.substring(0,4);
+  let periodoMes = periodo.substring(5,7)
+  
+  data.setFullYear(parseInt(periodoAno));
+  data.setMonth(parseInt(periodoMes));
+  // Meses possíveis
+  var meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+  var mes = data.getMonth();
+
+  // Resultado
+  var extenso =  meses[mes] + ' - ' + periodoAno;
+  return extenso;
+
+}
+
+

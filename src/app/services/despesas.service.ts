@@ -20,22 +20,41 @@ export class DespesasService {
 
   constructor(private httpClient: HttpClient) { }
 
-  public createDespesa(body: any) {
-    this.httpClient.post<any>(this.baseUrl + '/api/despesas', body).subscribe(log => {
+  public createDespesa(body: any, token:string) {
+    const headers = { 
+      'content-type': 'application/json', 
+      'Authorization': "Bearer "+ token} 
+    this.httpClient.post<any>(this.baseUrl + '/api/despesas', body, {headers: headers}).subscribe(log => {
       console.log(log)
       window.location.reload();
     })
   }
   
-  public getDespesasPorPessoa(id: string) {
-    return this.httpClient.get<CompiladoDespesas[]>(this.baseUrl + '/api/despesas/pessoa/2?periodo=MENSAL');
+  public getDespesasPorPessoa( token: string) {
+    const headers = { 
+      'content-type': 'application/json', 
+      'Authorization': "Bearer "+ token} 
+    return this.httpClient.get<CompiladoDespesas[]>(
+      this.baseUrl + '/api/despesas/pessoa?periodo=MENSAL', {headers: headers});
   }
 
-  public getEstimativas(id: string): Observable<Estimativas[]> {
-    return this.httpClient.get<Estimativas[]>(this.baseUrl + '/api/despesas/pessoa/2/estimativas');
+  public getEstimativas(token: string): Observable<Estimativas[]> {
+    const headers = { 'content-type': 'application/json', 'Authorization':  "Bearer "+token} 
+    console.log(headers)
+    return this.httpClient.get<Estimativas[]>(this.baseUrl + '/api/despesas/pessoa/estimativas', {headers: headers});
   }
 
-  public getTags(id: string): Observable<Tags[]> {
-    return this.httpClient.get<Tags[]>(this.baseUrl + '/api/despesas/tags/pessoa/2');
+  public getTags(token: string): Observable<Tags[]> {
+    const headers = { 
+      'content-type': 'application/json', 
+      'Authorization': "Bearer "+ token} 
+    return this.httpClient.get<Tags[]>(this.baseUrl + '/api/despesas/tags/pessoa/',  {headers: headers});
+  }
+
+  public deleteDespesa(token: string, idCorrelacao: string){
+    const headers = { 
+      'content-type': 'application/json', 
+      'Authorization': "Bearer "+ token} 
+    return this.httpClient.delete(this.baseUrl + '/api/despesas/'+idCorrelacao,  {headers: headers});
   }
 }

@@ -38,6 +38,7 @@ export class GraficoComponent implements OnInit {
         plugins: {
           legend: {
             position: 'top',
+            display: this.infoGrafico.legend
           },
           title: {
             display: true,
@@ -52,7 +53,7 @@ export class GraficoComponent implements OnInit {
   gerarCor(){
     
     this.infoGrafico.data.forEach(element => {
-      this.coresRandom.push('rgba(255, '+(Math.floor(Math.random() * (200 - 150) ) + 150)+', 230, 1)')
+      this.coresRandom.push('rgba(100, '+(Math.floor(Math.random() * (200 - 100) ) + 100)+', 255, 1)')
     });
   }
 }

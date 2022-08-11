@@ -11,6 +11,9 @@ import { CadastrarDespesaComponent } from './cadastrar-despesa/cadastrar-despesa
 import { PortalCabecalhoComponent } from './portal-cabecalho/portal-cabecalho.component';
 import { DespesaComponent } from './despesa/despesa.component';
 import { GraficoComponent } from './grafico/grafico.component';
+import { LoginComponent } from './login/login.component';
+import { DespesaGrupoComponent } from './despesa-grupo/despesa-grupo.component';
+import { PessoaComponent } from './pessoa/pessoa.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +23,10 @@ import { GraficoComponent } from './grafico/grafico.component';
     CadastrarDespesaComponent,
     PortalCabecalhoComponent,
     DespesaComponent,
-    GraficoComponent
+    GraficoComponent,
+    LoginComponent,
+    DespesaGrupoComponent,
+    PessoaComponent
   ],
   imports: [
     BrowserModule,

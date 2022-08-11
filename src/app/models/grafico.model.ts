@@ -3,4 +3,5 @@ export class Grafico{
     tipo: any;
     labels: string[];
     data: string[];
+    legend:boolean;
 }
