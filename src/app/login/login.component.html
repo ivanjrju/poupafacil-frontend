@@ -5,7 +5,14 @@
     </button>
   </nav>
 <br>
-<div class="d-flex justify-content-center align-items-center">
+<!--Mensagem de cadastro-->
+<div class="container"  *ngIf="isCadastroSucesso">
+    <div class="alert alert-primary" role="alert">
+       {{msgCadastro}}
+    </div>
+</div>
+<!--Formulario de login-->
+<div class="d-flex justify-content-center align-items-center" *ngIf="!isExibirCadastro">
     <div class="card p-5">
         <img src="../../assets/images/logo_poupa_facil_png.png" alt="poupafacil">
         <form [formGroup]="loginForm" (ngSubmit)="efetuarLogin()">
@@ -22,14 +29,47 @@
             <div class="form-group">
                 <a href="#">Esqueceu sua senha?</a>
             </div>
+            <div class="form-group">
+                <a href="#" (click)="habilitarCadastro()">Novo por aqui?</a>
+            </div>
 
             <div>
                 <button class="btn btn-dark botao-login" type="submit">Login</button>
-            </div>
-            
+            </div>   
+        </form> 
+    </div>   
+</div>
 
-        </form>
-       
+<!--Formulario de cadastro-->
+<div class="container"  *ngIf="isCadastroSucesso">
+    <div class="alert alert-primary" role="alert">
+       {{msgCadastro}}
     </div>
-    
+</div>
+<br>
+<div class="d-flex justify-content-center align-items-center" *ngIf="isExibirCadastro" >
+    <div class="card p-5">
+        <img src="../../assets/images/logo_poupa_facil_png.png" alt="poupafacil">
+        <form [formGroup]="pessoaForm" (ngSubmit)="cadastrarPessoa()">
+            <div class="form-group">
+                <label for="nomeCadastro">Nome</label>
+                <input type="text" formControlName="inputNomeCadastro" id="nomeCadastro" class="form-control"  ngModel required>
+            </div>
+            <div class="form-group">
+                <label for="emailCadastro">E-mail</label>
+                <input type="text" formControlName="inputEmailCadastro" id="emailCadastro" class="form-control"  ngModel required>
+            </div>
+            <div class="form-group">
+            <label for="senhaCadastro">Senha</label>
+                <input type="password" formControlName="inputSenhaCadastro" id="senhaCadastro" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="renda">Renda</label>
+                <input type="password" formControlName="inputRendaCadastro" id="renda" class="form-control">
+            </div>
+            <div>
+                <button class="btn btn-dark botao-login" type="submit">Cadastrar</button>
+            </div>
+        </form>      
+    </div>
 </div>

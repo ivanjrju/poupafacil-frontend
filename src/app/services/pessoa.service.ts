@@ -18,10 +18,9 @@ export class PessoaService {
   constructor(private httpClient: HttpClient) { }
 
   public createpessoa(body: any) {
-    this.httpClient.post<any>(this.baseUrl + '/api/despesas', body).subscribe(log => {
-      console.log(log)
-      window.location.reload();
-    })
+   return this.httpClient.post<any>(this.baseUrl + '/api/pessoas', body);
+     // window.location.reload();
+   
   }
   
   public getPessoa(token: string) {
