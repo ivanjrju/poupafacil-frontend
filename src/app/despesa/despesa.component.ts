@@ -65,6 +65,8 @@ export class DespesaComponent implements OnInit {
     await this.carregarDespesasPorPessoa();
     await this.carregarEstimativas();
     await this.carregarTags();
+
+    console.log("loading 3"+this.exibirCarregamento)
     
   }
 
@@ -105,6 +107,7 @@ export class DespesaComponent implements OnInit {
         this.exibirEstimativas = false;     
       }
      console.log(objeto)
+     console.log("loading 1"+this.exibirCarregamento)
 
     },
     error =>{
@@ -142,6 +145,7 @@ export class DespesaComponent implements OnInit {
       }
     
     })
+    console.log("loading 2"+this.exibirCarregamento)
   }
 }
 

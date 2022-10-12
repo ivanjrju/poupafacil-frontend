@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms'
 import { HttpClient } from '@angular/common/http';
+import { GrupoService } from '../services/grupo.service';
 
 @Component({
   selector: 'app-cadastrar-grupo',
@@ -9,48 +10,43 @@ import { HttpClient } from '@angular/common/http';
 })
 export class CadastrarGrupoComponent implements OnInit {
 
-  inputNome: string = "";
-  inputIdPessoa: string = "";
-  idPessoa: any = "";
-  inputIdPessoas: any[] = [];
+
   token: any;
+  participantes: string[] = [];
+  isCadastroSucesso: boolean = false;
+  msgCadastro: string= "teste";
 
   cadastroForm = new FormGroup({
-    inputNome: new FormControl(''),
-    inputIdPessoas: new FormControl(this.inputIdPessoas),
-    inputIdPessoa: new FormControl('')
+    inputNomeGrupo: new FormControl(''),
+    inputParticipante: new FormControl('')
   });
 
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private grupoService: GrupoService) { }
 
   ngOnInit(): void {
-  
+    this.isCadastroSucesso= false;
+    this.limparcampos();
   }
 
-  adicionarPessoa(){
-    console.log(this.inputIdPessoa)
-    this.inputIdPessoas.push(this.inputIdPessoa);
-    this.inputIdPessoa = "";
-  }
-
-  removerPessoa(index: number){
-    this.inputIdPessoas.splice(index, 1);
-  }
-
-  teste(){
+  cadastrarGrupo(){
+    this.limparcampos();
     console.log(this.cadastroForm.value)
     this.token = localStorage.getItem("token")
+    this.participantes.push(this.cadastroForm.value.inputParticipante)
     const body = {
-      nome: this.cadastroForm.value.inputNome,
-      participantes: this.cadastroForm.value.inputIdPessoas
+      nome: this.cadastroForm.value.inputNomeGrupo,
+      participantes: this.participantes
+ 
     }
+    console.log(body)
+    this.grupoService.criarGrupos(body, this.token);
+    this.msgCadastro = "Grupo cadastrado com sucesso"
+    this.isCadastroSucesso = true;
+  }
 
-    this.http.post<any>('https://poupafacil-backend.herokuapp.com/api/grupos', body)
-      .subscribe(data => {
-        alert("Cadastrado com sucesso")
-        console.log(data)
-      });
+  limparcampos(){
+    this.isCadastroSucesso = false;
+    this.cadastroForm.value.inputNomeGrupo = "";
   }
 
 }

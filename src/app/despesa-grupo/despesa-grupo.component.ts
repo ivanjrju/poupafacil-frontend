@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { GrupoService } from '../services/grupo.service';
+import { Despesa } from '../models/despesa.model';
+import { CompiladoDespesas } from '../models/compiladoDespesas.model';
+import { Grafico } from '../models/grafico.model';
+import { DespesasService } from '../services/despesas.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-despesa-grupo',
@@ -11,9 +16,39 @@ export class DespesaGrupoComponent implements OnInit {
 
   grupos: any[]
   token: any;
+  idGrupo: number;
   isExibePessoasGrupo: boolean = false;
+  despesas: Despesa[] = []
+  isPossuiDespesas: boolean = true;
+  isExibeCadastraDespesa: boolean = true;
+  
+  exibirEstimativas: boolean = false;
+  exibirTags: boolean = false;
+  exibirListaDespesas: boolean = false
+  exibirCarregamento: boolean = true;
 
-  constructor(private httpClient: HttpClient, private grupoService: GrupoService) { }
+  compiladoDespesas: CompiladoDespesas[]
+
+  formularioCadastroDespesa: boolean = true;
+  graficoEstimativas: Grafico = {
+    nome: "Estimativas",
+    tipo: "bar",
+    labels: [],
+    data: [],
+    legend:false
+  }
+  graficoTags: any = {
+    nome: "Categoria",
+    tipo: "doughnut",
+    labels: [],
+    data: []
+  }
+
+  constructor(
+    private httpClient: HttpClient, 
+    private grupoService: GrupoService,
+    private despesasService: DespesasService,
+    private router: Router, ) { }
 
   async ngOnInit() {
     this.token = localStorage.getItem("token")
@@ -21,11 +56,75 @@ export class DespesaGrupoComponent implements OnInit {
       this.grupos = objeto
       if(this.grupos.length != 0){
         this.isExibePessoasGrupo = true;
+        console.log(this.isExibePessoasGrupo)
       }
+      console.log(this.grupos)
     },
     error =>{
-      console.log("Erro ao carregar grupo: "+ error)
+      if(error.status == 403){
+        alert("Sessão expirada, efetue login");
+        this.router.navigate(['/login']);
+        console.log("Erro ao carregar grupo: "+ error)
+    }
+     
     })
   }
+
+  
+  deletarDespesa(item: any){
+    console.log(item.idCorrelacaoParcela)
+    this.token = localStorage.getItem("token")
+    this.despesasService.deleteDespesa(this.token, item.idCorrelacaoParcela).subscribe(response=>{
+      console.log("deletado")
+    },
+    error=>{
+      console.log("Erro ao deletar")
+    })
+    console.log(item)
+  }
+
+
+
+  consultarGrupo(event: any){
+    this.despesas = [];
+    this.isPossuiDespesas = true;
+    this.isExibeCadastraDespesa = true;
+    console.log("Carregar")
+    if(event.target.value != ""){
+      console.log("IF")
+      this.idGrupo = event.target.value;
+      this.buscarDespesasGrupo("MENSAL")
+    }
+     
+  }
+
+  consultarDespesaPeriodo(event: any){
+    this.despesas = [];
+    this.buscarDespesasGrupo(event.target.value);
+  }
+  
+
+  buscarDespesasGrupo(periodo:string){
+    console.log(periodo)
+    this.grupoService.getGruposById(this.token,this.idGrupo, periodo).subscribe(response=>{
+      this.compiladoDespesas = response
+      if(this.compiladoDespesas.length > 0){
+        console.log(  this.compiladoDespesas)
+        this.compiladoDespesas.forEach(d => {
+          d.despesas.forEach(e=>{
+            this.despesas.push(e);
+          })
+      })
+      this.exibirEstimativas = true;
+      }else{
+          this.isPossuiDespesas = false;
+          this.isExibeCadastraDespesa = false;
+      }
+    },
+    error=>{
+      console.log("Erro ao consultar")
+    })
+  }
+  
 
 }
