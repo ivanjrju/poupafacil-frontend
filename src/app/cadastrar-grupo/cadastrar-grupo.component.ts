@@ -12,7 +12,8 @@ export class CadastrarGrupoComponent implements OnInit {
   inputNome: string = "";
   inputIdPessoa: string = "";
   idPessoa: any = "";
-  inputIdPessoas: any[] = []
+  inputIdPessoas: any[] = [];
+  token: any;
 
   cadastroForm = new FormGroup({
     inputNome: new FormControl(''),
@@ -39,7 +40,7 @@ export class CadastrarGrupoComponent implements OnInit {
 
   teste(){
     console.log(this.cadastroForm.value)
-
+    this.token = localStorage.getItem("token")
     const body = {
       nome: this.cadastroForm.value.inputNome,
       participantes: this.cadastroForm.value.inputIdPessoas
