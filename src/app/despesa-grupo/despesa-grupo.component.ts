@@ -21,6 +21,10 @@ export class DespesaGrupoComponent implements OnInit {
   despesas: Despesa[] = []
   isPossuiDespesas: boolean = true;
   isExibeCadastraDespesa: boolean = true;
+  periodoSelecionado: string = "";
+  exibeMsg:boolean = false;
+  mensagem: string = "";
+  
   
   exibirEstimativas: boolean = false;
   exibirTags: boolean = false;
@@ -76,6 +80,15 @@ export class DespesaGrupoComponent implements OnInit {
     this.token = localStorage.getItem("token")
     this.despesasService.deleteDespesa(this.token, item.idCorrelacaoParcela).subscribe(response=>{
       console.log("deletado")
+      this.exibeMsg = true;
+      this.mensagem = "Despesa excluída com sucesso"
+      this.despesas = [];
+      if(this.periodoSelecionado != ""){
+        this.buscarDespesasGrupo(this.periodoSelecionado)
+      }else{
+        this.buscarDespesasGrupo("MENSAL")
+      }
+      
     },
     error=>{
       console.log("Erro ao deletar")
@@ -86,12 +99,10 @@ export class DespesaGrupoComponent implements OnInit {
 
 
   consultarGrupo(event: any){
-    this.despesas = [];
+    this.limparCampos();
     this.isPossuiDespesas = true;
     this.isExibeCadastraDespesa = true;
-    console.log("Carregar")
     if(event.target.value != ""){
-      console.log("IF")
       this.idGrupo = event.target.value;
       this.buscarDespesasGrupo("MENSAL")
     }
@@ -99,12 +110,13 @@ export class DespesaGrupoComponent implements OnInit {
   }
 
   consultarDespesaPeriodo(event: any){
-    this.despesas = [];
+    this.limparCampos();
     this.buscarDespesasGrupo(event.target.value);
   }
   
 
   buscarDespesasGrupo(periodo:string){
+    this.periodoSelecionado = periodo;
     console.log(periodo)
     this.grupoService.getGruposById(this.token,this.idGrupo, periodo).subscribe(response=>{
       this.compiladoDespesas = response
@@ -122,8 +134,18 @@ export class DespesaGrupoComponent implements OnInit {
       }
     },
     error=>{
-      console.log("Erro ao consultar")
+      if(error.status == 403){
+        alert("Sessão expirada, efetue login");
+        this.router.navigate(['/login']);
+        console.log("Erro ao carregar grupo: "+ error)
+      }
     })
+  }
+
+  limparCampos(){
+    this.despesas = [];
+    this.exibeMsg = false;
+    this.mensagem = ""
   }
   
 

@@ -53,6 +53,16 @@
     </div>
 </div>
 <br>
+
+<div class="container">
+    <div class="row"  *ngIf="exibeMsg">
+        <div class="col">
+            <div class="alert alert-primary" role="alert">
+            {{mensagem}}
+            </div>
+        </div>
+    </div>
+</div>
 <div class="container">
     <div class="row" *ngIf="!isPossuiDespesas">
         <div class="col-4">
@@ -100,7 +110,7 @@
                         <td>{{item.data}}</td>
                         <td>{{item.tag}}</td>
                         <td>{{item.grupo?.nome}}</td>
-                        <td><button type="button" disabled class="btn btn-danger" (click)="deletarDespesa(item)">X</button></td>
+                        <td><button type="button"  class="btn btn-danger" (click)="deletarDespesa(item)">X</button></td>
                     </tr>
                 </tbody>
             </table>
@@ -109,26 +119,3 @@
 </div>
     <br>
     <br>
-<!-- *ngIf="isExibePessoasGrupo"-->
-<!--<div class="container" >
-    <div class="row">
-        <div class="col-6">
-            <table class="table table-hover">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Nome</th>
-                        <th scope="col">Email</th>
-                        <th scope="col"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr >
-                        <td>Jacqueline</td>
-                        <td>Jacqueline@email</td>
-                        <td><button type="button" class="btn btn-danger">X</button></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>-->

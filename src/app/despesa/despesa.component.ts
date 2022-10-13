@@ -23,6 +23,7 @@ export class DespesaComponent implements OnInit {
   exibirTags: boolean = false;
   exibirListaDespesas: boolean = false
   exibirCarregamento: boolean = true;
+  isPossuiDespesa: boolean = true;
 
   compiladoDespesas: CompiladoDespesas[]
 
@@ -99,12 +100,18 @@ export class DespesaComponent implements OnInit {
       this.graficoEstimativas.data = estimativasData
       this.graficoEstimativas.legend = false
 
-      if(this.despesas.length != 0){
+      console.log(this.despesas.length)
+
+      if(this.despesas.length > 0){
+        console.log("IF")
         this.exibirEstimativas = true
         this.exibirCarregamento = false;
+        this.isPossuiDespesa= false;
       }else{
-        this.exibirCarregamento = true;
-        this.exibirEstimativas = false;     
+        console.log("ELSE")
+        this.exibirCarregamento = false;
+        this.exibirEstimativas = false;  
+        this.isPossuiDespesa= false;   
       }
      console.log(objeto)
      console.log("loading 1"+this.exibirCarregamento)
