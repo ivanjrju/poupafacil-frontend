@@ -14,10 +14,9 @@
         </div>
         <div class="col-8">
             <div class="input-group mb-3">
-                <select  class="form-control" formControlName="inputIdGrupo" id="inputIdGrupo" >
-                    <option value="" >Selecione o grupo</option>
-                    <option [selected]="true == true" value="0">Sem grupo</option>
-                    <option *ngFor="let grupo of grupos; let i = index" [value]="grupos[i].idGrupo">
+                <select  class="form-control" formControlName="inputIdGrupo" id="inputIdGrupo" (change)="consultarGrupo($event)">
+                    <option [selected]="true == true" value="">Selecione o grupo</option>
+                    <option *ngFor="let grupo of grupos; let i = index" [value]="grupos[i].idGrupo" >
                         {{grupo.nome}}
                     </option>
                 </select>
@@ -32,7 +31,7 @@
 </div>
 <div>
 
-<div class="container">
+<div class="container" *ngIf="!isExibePessoasGrupo" >
     <h6 class="card-title">Você não possui grupos cadastrados, adicione um novo grupo para visualizar
         informações consolidadas
     </h6>
@@ -54,25 +53,69 @@
     </div>
 </div>
 <br>
-<div class="container"  *ngIf="isExibePessoasGrupo">
+
+<div class="container">
+    <div class="row"  *ngIf="exibeMsg">
+        <div class="col">
+            <div class="alert alert-primary" role="alert">
+            {{mensagem}}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row" *ngIf="!isPossuiDespesas">
+        <div class="col-4">
+            <h5 class="card-title">Você não possui despesas cadastradas para esse grupo. Para incluir nova despesa, vá até o menu despesa > pessoais</h5>
+        </div>
+    </div>
+</div>
+<div class="container " *ngIf="exibirCarregamento">
+    <div class="text-center">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden"></span>
+        </div>
+      </div>
+</div>
+<div class="container"  *ngIf="exibirEstimativas">
     <div class="row">
-        <div class="col-6">
+        <div  class="col">
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-secondary" value="MENSAL" (click)="consultarDespesaPeriodo($event)">Mensal</button>
+                <button type="button" class="btn btn-secondary" value="TRIMESTRAL" (click)="consultarDespesaPeriodo($event)">Trimestral</button>
+                <button type="button" class="btn btn-secondary" value="SEMESTRAL" (click)="consultarDespesaPeriodo($event)">Semestral</button>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col">
             <table class="table table-hover">
                 <thead class="thead-dark">
                     <tr>
-                        <th scope="col">Nome</th>
-                        <th scope="col">Email</th>
-                        <th scope="col"></th>
+                        <th scope="col">Despesa</th>
+                        <th scope="col">Valor</th>
+                        <th scope="col">Parcelas</th>
+                        <th scope="col">Data</th>
+                        <th scope="col">Categoria</th>
+                        <th scope="col">Grupo</th>
+                        <th scope="col">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr >
-                        <td>Jacqueline</td>
-                        <td>Jacqueline@email</td>
-                        <td><button type="button" class="btn btn-danger">X</button></td>
+                    <tr *ngFor="let item of despesas">
+                        <td>{{item.nomeDespesa}}</td>
+                        <td>R$ {{item.valorDespesa}}</td>
+                        <td>{{item.parcela}}/{{item.parcelaTotal}}</td>
+                        <td>{{item.data}}</td>
+                        <td>{{item.tag}}</td>
+                        <td>{{item.grupo?.nome}}</td>
+                        <td><button type="button"  class="btn btn-danger" (click)="deletarDespesa(item)">X</button></td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+    <br>
+    <br>

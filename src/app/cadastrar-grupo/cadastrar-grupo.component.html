@@ -1,8 +1,8 @@
-<form [formGroup]="cadastroForm" (ngSubmit)="teste()">
+<form [formGroup]="cadastroForm" (ngSubmit)="cadastrarGrupo()">
 
     <div class="modal-header">
         <h5 class="modal-title">Adicionar novo grupo</h5>
-        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"> X </button>
+        <button type="button" class="btn-close" data-dismiss="modal" (click)="teste()" aria-label="Close"> X </button>
     </div>
     <br>
     <div class="row">
@@ -19,20 +19,14 @@
             </div>
         </div>
     </div>
-
-
-    <div class="row">
-        <div class="col">
-            <div class="input-group mb-3">
-                <select  class="form-control" formControlName="inputIdGrupo" id="inputIdGrupo" >
-                    <option value="" disabled selected>Selecione um usuario</option>
-                    <option [selected]="true == true" value="0">Sem grupo</option>
-                    
-                </select>
-            </div>
-        </div>   
-    </div>
     <br>
+    <div class="row"  *ngIf="isCadastroSucesso">
+        <div class="col">
+            <div class="alert alert-primary" role="alert">
+            {{msgCadastro}}
+            </div>
+        </div>
+    </div>
     <div class="modal-footer">
         <button type="submit" class="btn btn-primary">Enviar</button>
     </div>
