@@ -28,12 +28,12 @@ export class CadastrarGrupoComponent implements OnInit {
     this.limparcampos();
   }
 
-  teste(){
+  fechar(){
     console.log("teste")
+    this.limparcampos();
   }
 
   cadastrarGrupo(){
-    //this.limparcampos();
     console.log(this.cadastroForm.value)
     this.token = localStorage.getItem("token")
     this.participantes.push(this.cadastroForm.value.inputParticipante)
@@ -50,7 +50,6 @@ export class CadastrarGrupoComponent implements OnInit {
 
   limparcampos(){
     this.isCadastroSucesso = false;
-    this.cadastroForm.value.inputNomeGrupo = "";
   }
 
 }

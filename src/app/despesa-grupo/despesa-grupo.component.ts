@@ -55,6 +55,10 @@ export class DespesaGrupoComponent implements OnInit {
     private router: Router, ) { }
 
   async ngOnInit() {
+    this.buscarGrupos();
+  }
+
+  async buscarGrupos(){
     this.token = localStorage.getItem("token")
     await this.grupoService.getGrupos(this.token).subscribe(objeto => {
       this.grupos = objeto
@@ -69,8 +73,7 @@ export class DespesaGrupoComponent implements OnInit {
         alert("Sessão expirada, efetue login");
         this.router.navigate(['/login']);
         console.log("Erro ao carregar grupo: "+ error)
-    }
-     
+      }
     })
   }
 
@@ -101,7 +104,8 @@ export class DespesaGrupoComponent implements OnInit {
   consultarGrupo(event: any){
     this.limparCampos();
     this.isPossuiDespesas = true;
-    this.isExibeCadastraDespesa = true;
+    this.isExibeCadastraDespesa = false;
+    this.exibirEstimativas = false;
     if(event.target.value != ""){
       this.idGrupo = event.target.value;
       this.buscarDespesasGrupo("MENSAL")
@@ -128,6 +132,7 @@ export class DespesaGrupoComponent implements OnInit {
           })
       })
       this.exibirEstimativas = true;
+      this.isPossuiDespesas = true;
       }else{
           this.isPossuiDespesas = false;
           this.isExibeCadastraDespesa = false;
@@ -140,6 +145,11 @@ export class DespesaGrupoComponent implements OnInit {
         console.log("Erro ao carregar grupo: "+ error)
       }
     })
+  }
+
+  recarregarGrupos(){
+    this.buscarGrupos();
+
   }
 
   limparCampos(){
