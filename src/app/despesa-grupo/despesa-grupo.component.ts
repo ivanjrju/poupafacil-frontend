@@ -134,6 +134,7 @@ export class DespesaGrupoComponent implements OnInit {
       this.exibirEstimativas = true;
       this.isPossuiDespesas = true;
       }else{
+          this.exibirEstimativas = false;
           this.isPossuiDespesas = false;
           this.isExibeCadastraDespesa = false;
       }
