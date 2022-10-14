@@ -15,14 +15,19 @@
         <div class="col-8">
             <div class="input-group mb-3">
                 <select  class="form-control" formControlName="inputIdGrupo" id="inputIdGrupo" (change)="consultarGrupo($event)">
-                    <option [selected]="true == true" value="">Selecione o grupo</option>
+                    <option ng-selected="true"  value="">Selecione o grupo</option>
                     <option *ngFor="let grupo of grupos; let i = index" [value]="grupos[i].idGrupo" >
                         {{grupo.nome}}
                     </option>
                 </select>
             </div>
         </div> 
+       
         <div class="col">
+            <button type="button" class="btn btn-success" (click)="recarregarGrupos()">
+                <img src="../../assets/img/arrow-clockwise.svg"  width="20" height="20"> 
+            </button>
+            &nbsp;
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                 <img src="../../assets/img/plus-circle-fill.svg"  width="20" height="20"> Novo grupo
             </button>
