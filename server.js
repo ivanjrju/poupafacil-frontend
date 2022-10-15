@@ -1,0 +1,21 @@
+//Install express server
+const express = require('express');
+const path = require('path');
+
+const app = express();
+
+// Serve only the static files form the dist directory
+app.use(express.static('./dist/poupafacil-frontend'));
+
+app.get('/*', (req, res) =>
+    res.sendFile('index.html', {root: 'dist/poupafacil-frontend/'}),
+);
+
+// Start the app by listening on the default Heroku port
+app.listen(process.env.PORT || 8080);
+Footer
+© 2022 GitHub, Inc.
+Footer navigation
+Terms
+Privacy
+Security
